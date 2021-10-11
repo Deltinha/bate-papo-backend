@@ -32,15 +32,27 @@ app.post('/messages', (req, res) => {
     const time = dayjs().format('HH:mm:ss');
     const from = req.headers['user'];
     messages.push({to, text, type, time, from})
-    console.log(messages)
+
     res.sendStatus(200);
 })
 
 app.get('/messages', (req, res) => {
     const limit = req.query.limit;
     const from = req.headers['user'];
-    
+
     res.send(messages)
+})
+
+app.post('/status', (req, res) => {
+    const user = req.headers['user']
+    if (!participants.find(participant => participant.name === user)){
+        res.sendStatus(400)
+    }
+    else {
+        const index = participants.findIndex(participant => participant.name === user);
+        participants[index].lastStatus = Date.now();
+        res.sendStatus(200);
+    }
 })
 
 app.listen(4000);
