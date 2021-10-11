@@ -36,4 +36,11 @@ app.post('/messages', (req, res) => {
     res.sendStatus(200);
 })
 
+app.get('/messages', (req, res) => {
+    const limit = req.query.limit;
+    const from = req.headers['user'];
+    
+    res.send(messages)
+})
+
 app.listen(4000);
