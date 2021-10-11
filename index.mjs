@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const participants = [];
+let participants = [];
 const messages = [];
 
 app.post('/participants', (req, res) => {
@@ -54,5 +54,13 @@ app.post('/status', (req, res) => {
         res.sendStatus(200);
     }
 })
+
+setInterval(()=>{
+    const toRemove = participants.filter((participant)=> Date.now() - participant.lastStatus > 10000)
+    participants = participants.filter((participant)=> Date.now() - participant.lastStatus <= 10000)
+    toRemove.forEach(participant => {
+        messages.push({from: participant.name, to: 'Todos', text: 'sai da sala...', type: 'status', time: dayjs().format('HH:mm:ss')})
+    });
+},15000)
 
 app.listen(4000);
