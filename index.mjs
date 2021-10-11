@@ -7,10 +7,6 @@ app.use(express.json());
 
 const participants = [];
 
-app.get("/", (req, res) => { 
-    res.send();
-})
-
 app.post('/participants', (req, res) => {
     const username = req.body.name;
     if (username === ''){
@@ -23,6 +19,10 @@ app.post('/participants', (req, res) => {
         participants.push({name: username, lastStatus: Date.now()})
         res.sendStatus(200);
     }
+})
+
+app.get("/participants", (req, res) => { 
+    res.send(participants);
 })
 
 app.listen(4000);
